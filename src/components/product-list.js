@@ -47,8 +47,8 @@ export default class ProductList extends Component {
 		return (
 		
 			<div>
-				<Table>
-				<thead>
+				<table className="product-list">
+				<thead className="list-header">
 				    <tr>
 				      <th>Image</th>
 				      <th>Product Name</th>
@@ -64,20 +64,22 @@ export default class ProductList extends Component {
 				      </tr> :
 				    	  this.state.products.map((product)=>(
 				      <tr key={product.id}>	
-				      	<td><Image src={product.imageURL} roundedCircle width="25" height="25"/></td>
+				      	<td><img src={product.image} width="40" height="40"/></td>
 				      	<td>{product.name}</td>
 				      	<td>{product.price}</td>					      	
 				      	<td>
-				      		<ButtonGroup>
-				      			<Link to={"edit/"+product.id} className="btn btn-sm btn-outline-primary"><FontAwesomeIcon icon={faEdit}/></Link>{' '}						      			
-				      			<Button size="sm" variant="outline-danger" onClick={this.delProduct.bind(this,product.id)}><FontAwesomeIcon icon={faTrash}/></Button>
-				      		</ButtonGroup>
+				      		<div>
+				      			<Link to={"edit/"+product.id}>
+				      			<button size="sm" variant="outline-primary"><FontAwesomeIcon icon={faEdit}/>
+				      			</button></Link>{' '}
+				                <button size="sm" variant="outline-danger" onClick={this.delProduct.bind(this,product.id)}><FontAwesomeIcon icon={faTrash}/></button>
+				      		</div>
 				      	</td>
 				      </tr>
 				      ))
 				  } 
 				  </tbody>
-				 </Table>
+				 </table>
 			</div>
 		)
 	}

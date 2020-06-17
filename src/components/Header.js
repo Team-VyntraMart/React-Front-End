@@ -174,6 +174,13 @@ class Header extends Component {
                       <strong>{this.props.total}</strong>
                     </td>
                   </tr>
+                  <tr>
+                  	<td>Total</td>
+                  	<td>:</td>
+                  	<td>
+                  		<strong>{this.props.taxTotal}</strong>
+                  </td>
+                </tr>
                 </tbody>
               </table>
             </div>

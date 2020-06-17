@@ -1,11 +1,23 @@
 import React, { Component } from "react";
-import {Card,Form,Button,Col} from 'react-bootstrap';
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSave,faUndo} from '@fortawesome/free-solid-svg-icons';
 
 import ProductList from "./product-list";
 import UserService from "../services/user.service";
 
+const required = value => {
+	  if (!value) {
+	    return (
+	      <div className="alert alert-danger" role="alert">
+	        This field is required!
+	      </div>
+	    );
+	 }
+};
+	
 export default class BoardAdmin extends Component {
   constructor(props) {
     super(props);
@@ -54,55 +66,60 @@ export default class BoardAdmin extends Component {
 	  const {name,price,image} = this.state;
 	  
     return (
-    	
-    		<div>
-        	<div>
-        	<Card>
-    			<Card.Header>Add New Product
-    			</Card.Header>
-    			<Form onReset={this.resetProduct} onSubmit={this.submitProduct} id="productFormId">
-    				<Card.Body>
-    					<Form.Row>
-    						  <Form.Group as={Col} controlId="formGridTitle">
-    						    <Form.Label>Product name</Form.Label>
-    						    <Form.Control required autoComplete="off"
-    						    	type="text" name="name"
-    						    	value={name} onChange={this.productChange}
-    						    	placeholder="Enter Product name" />
-    						  </Form.Group>
-    						  <Form.Group as={Col} controlId="formGridTitle">
-    						  	<Form.Label>Product price</Form.Label>
-    						    <Form.Control required autoComplete="off"
-    						    	type="text" name="price"
-    						    	value={price} onChange={this.productChange}
-    						    	placeholder="Enter Product price" />
-    						  </Form.Group>
-    					  </Form.Row>
-    					  <Form.Row>
-    						  <Form.Group as={Col} controlId="formGridTitle">
-    						  	<Form.Label>Product image</Form.Label>
-    						    <Form.Control required autoComplete="off"
-    						    	type="text" name="image"
-    						    	value={image} onChange={this.productChange}
-    						    	placeholder="Enter Product image URL" />
-    						  </Form.Group>
-    					  </Form.Row>
-    				   </Card.Body>
-    				   <Card.Footer style={{"textAlign":"right"}}>
-    					<Button size="sm" variant="success" type="submit" onClick={this.refreshPage}>
-    						<FontAwesomeIcon icon={faSave}/>Save
-    				    </Button>{' '}
-    					<Button size="sm" variant="info" type="reset">
-    						<FontAwesomeIcon icon={faUndo}/>Reset
-    					</Button>
-    				</Card.Footer>
-    				</Form>
-    			</Card>
-    			</div>
-    			<div>
-    			<ProductList/>
-    		</div>
-    		  </div>
+    		<div className="col-md-12">
+            <div className="card card-container">
+            <div><h3>Add new Product</h3></div>
+            <div><br/></div>
+              <Form onReset={this.resetProduct}
+                onSubmit={this.submitProduct}>
+                <div className="form-group">
+                  <label>Product name</label>
+                  <Input type="text"
+                    className="form-control"
+                    name="name" autoComplete="off"
+                    value={name} placeholder="Enter Product name"
+                    onChange={this.productChange}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Price</label>
+                  <Input type="number"
+                    className="form-control"
+                    name="price" autoComplete="off"
+                    value={price} placeholder="Enter Product price"
+                    onChange={this.productChange}
+                    validations={[required]}
+                  />
+                </div>
+                  
+                  <div className="form-group">
+                  <label>Image URL</label>
+                  <Input type="text"
+                    className="form-control"
+                    name="image" autoComplete="off"
+                    value={image} placeholder="Enter Image URL"
+                    onChange={this.productChange}
+                    validations={[required]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button
+                  size="sm" variant="success" type="submit" onClick={this.refreshPage}>
+                  <FontAwesomeIcon icon={faSave}/>Save
+                  </button>{' '}
+                  
+                  <button
+                  size="sm" variant="info" type="reset">
+                  <FontAwesomeIcon icon={faSave}/>Reset
+                  </button>
+                  </div>
+              </Form>
+            </div>
+            <div> <ProductList/> </div>
+          </div>
         );
       }
 }

@@ -21,8 +21,8 @@ export default class Home extends Component {
     	category: "",
     	cartBounce: false,
     	quantity: 1,
-    	modalActive: false
-      
+    	modalActive: false,
+    	taxTotal: 0
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.handleMobileSearch = this.handleMobileSearch.bind(this);
@@ -132,7 +132,8 @@ export default class Home extends Component {
        total += cart[i].price * parseInt(cart[i].quantity);
      }
      this.setState({
-       totalAmount: total
+       totalAmount: total,
+       taxTotal: 1.05 * total
      });
    }
 
@@ -168,6 +169,7 @@ export default class Home extends Component {
 	    cartBounce={this.state.cartBounce}
 	    total={this.state.totalAmount}
 	    totalItems={this.state.totalItems}
+	    taxTotal={this.state.taxTotal}
 	    cartItems={this.state.cart}
 	    removeProduct={this.handleRemoveProduct}
 	    handleSearch={this.handleSearch}

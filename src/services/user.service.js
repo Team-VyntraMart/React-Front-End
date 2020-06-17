@@ -29,7 +29,7 @@ class UserService {
   }
   
   updateProduct(pId, name, price, image) {
-		return axios.put(API_URL + "admin/updateProduct" + pId, {name, price, image},{ headers: authHeader() });
+		return axios.put(API_URL + "admin/updateProduct/" + pId, {name, price, image},{ headers: authHeader() });
   }
 }
 

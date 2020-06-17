@@ -1,9 +1,21 @@
 import React,{Component} from 'react';
-import {Card,Form,Button,Col} from 'react-bootstrap';
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSave} from '@fortawesome/free-solid-svg-icons';
 
 import UserService from "../services/user.service";
+
+const required = value => {
+	  if (!value) {
+	    return (
+	      <div className="alert alert-danger" role="alert">
+	        This field is required!
+	      </div>
+	    );
+	 }
+};
 
 export default class UpdateProduct extends Component {
 	
@@ -31,7 +43,8 @@ export default class UpdateProduct extends Component {
 						id: response.data.id,
 						name: response.data.name,
 						price: response.data.price,
-						added_on: response.data.added_on
+						added_on: response.data.added_on,
+						image: response.data.image
 					});
 				}
 			}).catch((error) => {
@@ -45,7 +58,7 @@ export default class UpdateProduct extends Component {
 	};
 	
 	updProduct = productId =>{
-		UserService.updateProduct(productId,this.state.name, this.state.price)
+		UserService.updateProduct(productId,this.state.name, this.state.price, this.state.image)
 			.then(response => {
 				if(response.data != null){
 					this.setState({"show":true, "method":"put"});
@@ -59,37 +72,56 @@ export default class UpdateProduct extends Component {
 	
 	render() {
 		  
-		  const {name,price} = this.state;
+		  const {name,price,image} = this.state;
+		  let productId = this.props.id;
 		  
 	    return (
-	    		<Card>
-				<Card.Header>Update Product
-				</Card.Header>
-				<Form onSubmit={this.updProduct} id="Id">
-					<Card.Body>
-						<Form.Row>
-							  <Form.Group as={Col} controlId="formGridTitle">
-							    <Form.Label>Product name</Form.Label>
-							    <Form.Control required autoComplete="off"
-							    	type="text" name="name"
-							    	value={name} onChange={this.productChange}
-							    	placeholder="Enter Product name" />
-							  </Form.Group>
-							  <Form.Group as={Col} controlId="formGridTitle">
-							  	<Form.Label>Product price</Form.Label>
-							    <Form.Control required autoComplete="off"
-							    	type="text" name="price"
-							    	value={price} onChange={this.productChange}
-							    	placeholder="Enter Product price" />
-							  </Form.Group>
-						  </Form.Row>
-					   </Card.Body>
-					   <Card.Footer style={{"textAlign":"right"}}>
-						<Button size="sm" variant="success" type="submit" onClick={this.refreshPage}>
-							<FontAwesomeIcon icon={faSave}/>Save
-					    </Button>
-					</Card.Footer>
-					</Form>
-				</Card>	
-	)}
+	    	<div className="col-md-12">
+	          <div className="card card-container">
+	            <div><h3>Update Product</h3></div>
+	            <div><br/></div>
+	            <Form onSubmit={this.updProduct.bind(this,productId)} id="Id">
+				<div className="form-group">
+					<label>Product name</label>
+					<Input type="text"
+						className="form-control"
+						name="name" autoComplete="off"
+						value={name} placeholder="Enter Product name"
+						onChange={this.productChange}
+						validations={[required]}
+					/>
+				</div>
+
+				<div className="form-group">
+					<label>Price</label>
+					<Input type="number"
+						className="form-control"
+						name="price" autoComplete="off"
+						value={price} placeholder="Enter Product price"
+						onChange={this.productChange}
+						validations={[required]}
+					/>
+				</div>
+            
+					<div className="form-group">
+					<label>Image URL</label>
+					<Input type="text"
+						className="form-control"
+						name="image" autoComplete="off"
+						value={image} placeholder="Enter Image URL"
+						onChange={this.productChange}
+						validations={[required]}
+					/>
+				</div>
+				
+					<div className="form-group">
+					<button size="sm" variant="success" type="submit" onClick={this.refreshPage}>
+						<FontAwesomeIcon icon={faSave}/>Save
+					</button>
+				</div>
+			</Form>
+			</div>
+		</div>
+	);
+   }
 }

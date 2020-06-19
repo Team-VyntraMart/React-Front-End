@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import "./sass/style.scss";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-//import "bootstrap/dist/css/bootstrap.min.css";
 
 import AuthService from "./services/auth.service";
 
@@ -26,8 +25,6 @@ class App extends Component {
     };
     this.logOut = this.logOut.bind(this);
   }
-  // Fetch Initial Set of Products from external API
-  
   
   componentDidMount() {
 	    const user_roles = AuthService.getCurrentUser();
@@ -52,6 +49,15 @@ class App extends Component {
             <div>
               <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="navbar-nav mr-auto">
+                
+	               <li className="logo">
+	                <Link to={"/"}>
+	                  <img src="https://previews.123rf.com/images/sergdibrova/sergdibrova1202/sergdibrova120200023/12346492-letter-v-made-of-grass-isolated-on-white-background-.jpg"
+	                	  alt="Brand" height="40" width="40"/>
+	                		  
+	                </Link>
+	               </li>
+              
                   <li className="nav-item">
                     <Link to={"/home"} className="nav-link">
                       Home
@@ -69,7 +75,7 @@ class App extends Component {
                   {currentUser && (
                     <li className="nav-item">
                       <Link to={"/user"} className="nav-link">
-                        Cart
+                        Checkout
                       </Link>
                     </li>
                   )}
@@ -111,9 +117,10 @@ class App extends Component {
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/profile" component={Profile} />
-                  <Route path="/user" component={BoardUser} />
-                  <Route path="/admin" component={BoardAdmin} />
-                  <Route path="/edit/:id" exact component={UpdateProduct}/>
+                  <Route exact path="/user" component={BoardUser} />
+                  <Route exact path="/admin" component={BoardAdmin} />
+                  <Route exact path="/edit/:id" exact component={UpdateProduct}/>
+                  
                 </Switch>
              </div>
            </div>

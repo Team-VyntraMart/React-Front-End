@@ -4,6 +4,8 @@ import Counter from "./Counter";
 import EmptyCart from "../empty-states/EmptyCart";
 import CSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
 import { findDOMNode } from "react-dom";
+import AuthService from "../services/auth.service";
+import {Link} from 'react-router-dom';
 
 class Header extends Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class Header extends Component {
     this.state = {
       showCart: false,
       cart: this.props.cartItems,
-      mobileSearch: false
+      mobileSearch: false,
+      currentUser: AuthService.getCurrentUser()
     };
   }
   handleCart(e) {
@@ -29,18 +32,7 @@ class Header extends Component {
       mobileSearch: true
     });
   }
-  handleSearchNav(e) {
-    e.preventDefault();
-    this.setState(
-      {
-        mobileSearch: false
-      },
-      function() {
-        this.refs.searchBox.value = "";
-        this.props.handleMobileSearch();
-      }
-    );
-  }
+  
   handleClickOutside(event) {
     const cartNode = findDOMNode(this.refs.cartPreview);
     const buttonNode = findDOMNode(this.refs.cartButton);
@@ -67,7 +59,9 @@ class Header extends Component {
       true
     );
   }
+  
   render() {
+	const { currentUser } = this.state;
     let cartItems;
     cartItems = this.state.cart.map(product => {
       return (
@@ -114,16 +108,7 @@ class Header extends Component {
         <div className="container">
 
           <div className="search">
-            <a
-              className="mobile-search"
-              href="#"
-              onClick={this.handleMobileSearch.bind(this)}
-            >
-              <img
-                src="https://res.cloudinary.com/sivadass/image/upload/v1494756966/icons/search-green.png"
-                alt="search"
-              />
-            </a>
+            
             <form
               action="#"
               method="get"
@@ -131,20 +116,10 @@ class Header extends Component {
                 this.state.mobileSearch ? "search-form active" : "search-form"
               }
             >
-              <a
-                className="back-button"
-                href="#"
-                onClick={this.handleSearchNav.bind(this)}
-              >
-                <img
-                  src="https://res.cloudinary.com/sivadass/image/upload/v1494756030/icons/back.png"
-                  alt="back"
-                />
-              </a>
               <input
                 type="search"
                 ref="searchBox"
-                placeholder="Search for Clothes"
+                placeholder="Search for fruits and vegetables"
                 className="search-keyword"
                 onChange={this.props.handleSearch}
               />
@@ -208,14 +183,35 @@ class Header extends Component {
               ref="cartPreview"
             >
               <CartScrollBar>{view}</CartScrollBar>
-              <div className="action-block">
-                <button
-                  type="button"
-                  className={this.state.cart.length > 0 ? " " : "disabled"}
-                >
-                  PROCEED TO CHECKOUT
-                </button>
-              </div>
+              
+              {currentUser ? (
+            		  <div className="action-block">
+            		  <div className="product-price">Tax: ₹ {this.props.tax}</div>
+                    	<Link to={{
+                    		pathname:'/user'
+                    	}}>
+                      <button
+                        type="button" 
+                        className={this.state.cart.length > 0 ? " " : "disabled"}
+                      >
+                        PROCEED TO CHECKOUT
+                      </button>
+                        </Link>
+                    </div>
+                    ) : (
+                    	<div className="action-block">
+                    	<div className="product-price">Tax: ₹ {this.props.tax}</div>
+			              	<Link to={"/login"}>
+			                <button
+			                  type="button" 
+			                  className={this.state.cart.length > 0 ? " " : "disabled"}
+			                > LOGIN
+			                  
+			                </button>
+			                  </Link>
+			              </div>
+                    )}
+              
             </div>
           </div>
         </div>

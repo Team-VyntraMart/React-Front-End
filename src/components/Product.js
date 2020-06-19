@@ -58,7 +58,6 @@ class Product extends Component {
         <Counter
           productQuantity={quantity}
           updateQuantity={this.props.updateQuantity}
-          resetQuantity={this.resetQuantity}
         />
         <div className="product-action">
           <button

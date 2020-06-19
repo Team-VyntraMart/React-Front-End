@@ -31,7 +31,6 @@ class Products extends Component {
             addToCart={this.props.addToCart}
             productQuantity={this.props.productQuantity}
             updateQuantity={this.props.updateQuantity}
-            openModal={this.props.openModal}
           />
         );
       });

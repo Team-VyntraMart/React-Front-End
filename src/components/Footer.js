@@ -4,7 +4,7 @@ const Footer = props => {
   return (
     <footer>
       <p>
-        &copy; 2020 <strong>Vyntra Mart</strong> - Online Cloth mart
+        &copy; 2020 <strong>Vyntra Mart</strong> - Online Grocery Store
       </p>
     </footer>
   );

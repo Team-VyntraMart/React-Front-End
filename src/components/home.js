@@ -6,6 +6,7 @@ import axios from 'axios';
 import Header from "./Header";
 import Products from "./Products";
 import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 import Counter from "./Counter";
 
 export default class Home extends Component {
@@ -18,23 +19,20 @@ export default class Home extends Component {
     	totalItems: 0,
     	totalAmount: 0,
     	term: "",
-    	category: "",
     	cartBounce: false,
     	quantity: 1,
-    	modalActive: false,
-    	taxTotal: 0
+    	tax: 0,
+    	taxTotal: 0,
+    	currentUser: AuthService.getCurrentUser()
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.handleMobileSearch = this.handleMobileSearch.bind(this);
-    this.handleCategory = this.handleCategory.bind(this);
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.sumTotalItems = this.sumTotalItems.bind(this);
     this.sumTotalAmount = this.sumTotalAmount.bind(this);
     this.checkProduct = this.checkProduct.bind(this);
     this.updateQuantity = this.updateQuantity.bind(this);
     this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
   
   componentDidMount() {
@@ -42,9 +40,6 @@ export default class Home extends Component {
    }
   
   getProducts() {
-	 /*let url =
-	   "https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json";
-	    axios.get(url)*/
 	  UserService.getPublicContent()
 	  	.then(response => {
 	      this.setState({
@@ -53,19 +48,16 @@ export default class Home extends Component {
 	  });
    }
   
-// Search by Keyword
+   //Search by Keyword
    handleSearch(event) {
      this.setState({ term: event.target.value });
    }
+   
    // Mobile Search Reset
    handleMobileSearch() {
      this.setState({ term: "" });
    }
-   // Filter by Category
-   handleCategory(event) {
-     this.setState({ category: event.target.value });
-     console.log(this.state.category);
-   }
+   
    // Add to Cart
    handleAddToCart(selectedProducts) {
      let cartItem = this.state.cart;
@@ -80,7 +72,7 @@ export default class Home extends Component {
          cart: cartItem
        });
      } else {
-       cartItem.push(selectedProducts);
+       cartItem.push(selectedProducts);    
      }
      this.setState({
        cart: cartItem,
@@ -133,35 +125,20 @@ export default class Home extends Component {
      }
      this.setState({
        totalAmount: total,
-       taxTotal: 1.05 * total
+       tax: Math.round(0.05 * total),
+       taxTotal: Math.round(1.05 * total)
      });
    }
-
-   //Reset Quantity
+   //Update Quantity
    updateQuantity(qty) {
      console.log("quantity added...");
      this.setState({
        quantity: qty
      });
    }
-   // Open Modal
-   openModal(product) {
-     this.setState({
-       quickViewProduct: product,
-       modalActive: true
-     });
-   }
-   // Close Modal
-   closeModal() {
-     this.setState({
-       modalActive: false
-     });
-   }
-
+   
   render() {
-	  
-	  
-	  
+	  const { currentUser } = this.state;
     return (
       
     <div className="container">
@@ -170,14 +147,11 @@ export default class Home extends Component {
 	    total={this.state.totalAmount}
 	    totalItems={this.state.totalItems}
 	    taxTotal={this.state.taxTotal}
+	  	tax={this.state.tax}
 	    cartItems={this.state.cart}
 	    removeProduct={this.handleRemoveProduct}
 	    handleSearch={this.handleSearch}
 	    handleMobileSearch={this.handleMobileSearch}
-	    handleCategory={this.handleCategory}
-	    categoryTerm={this.state.category}
-	    updateQuantity={this.updateQuantity}
-	    productQuantity={this.state.moq}
 	  />
 	  <Products
 	    productsList={this.state.products}

@@ -22,6 +22,7 @@ export default class UpdateProduct extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			id:'',
 			show : false
 		};
 		this.productChange = this.productChange.bind(this);
@@ -63,6 +64,7 @@ export default class UpdateProduct extends Component {
 				if(response.data != null){
 					this.setState({"show":true, "method":"put"});
 					setTimeout(() => this.setState({"show":false}),3000);
+					setTimeout(() => this.list(),2000);
 				}else{
 					this.setState({"show":false});					
 				}
@@ -70,10 +72,14 @@ export default class UpdateProduct extends Component {
 		this.setState(this.initialState);
 	};
 	
+	list = () => {
+		return this.props.history.push("/admin");
+	}
+	
 	render() {
 		  
 		  const {name,price,image} = this.state;
-		  let productId = this.props.id;
+		  let productId = this.state.id;
 		  
 	    return (
 	    	<div className="col-md-12">
@@ -115,7 +121,7 @@ export default class UpdateProduct extends Component {
 				</div>
 				
 					<div className="form-group">
-					<button size="sm" variant="success" type="submit" onClick={this.refreshPage}>
+					<button size="sm" variant="success" type="submit">
 						<FontAwesomeIcon icon={faSave}/>Save
 					</button>
 				</div>

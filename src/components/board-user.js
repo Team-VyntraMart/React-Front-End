@@ -5,37 +5,18 @@ import UserService from "../services/user.service";
 export default class BoardUser extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      content: ""
-    };
   }
 
   componentDidMount() {
-    UserService.getUserBoard().then(
-      response => {
-        this.setState({
-          content: response.data
-        });
-      },
-      error => {
-        this.setState({
-          content:
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString()
-        });
-      }
-    );
+    UserService.getUserBoard();
   }
 
   render() {
+	  
     return (
       <div className="col-md-12">
         <div className="jumbotron">
-          <h3>{this.state.content}</h3>
+          <h3>Sorry, the checkout process is not configured yet. </h3>
         </div>
       </div>
     );

@@ -31,6 +31,10 @@ class UserService {
   updateProduct(pId, name, price, image) {
 		return axios.put(API_URL + "admin/updateProduct/" + pId, {name, price, image},{ headers: authHeader() });
   }
+  
+  addProductToCart(selectedProducts,user_id) {
+	  return axios.post(API_URL + "user/addtocart", {selectedProducts,user_id},{ headers: authHeader() });
+  }
 }
 
 export default new UserService();

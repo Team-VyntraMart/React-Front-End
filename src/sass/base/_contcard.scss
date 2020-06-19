@@ -3,6 +3,15 @@ label {
   margin-top: 10px;
 }
 
+// Logo
+.logo {
+  width: 123px;
+  @media (max-width: 480px) {
+    width: 102px;
+    margin: 2px 0;
+  }
+}
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
